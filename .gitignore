@@ -11,3 +11,5 @@ migrations/*.csv
 .prettierrc.extension.yml
 .idea
 .phpactor.json
+
+/docker/api-dev.Dockerfile
