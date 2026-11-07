@@ -12,4 +12,4 @@ migrations/*.csv
 .idea
 .phpactor.json
 
-/docker/api-dev.Dockerfile
+docker/api-dev.Dockerfile
