@@ -43,8 +43,22 @@ class ExampleController
         return new JsonHttpResponse($rows[0]);
     }
     
-    public function getWeatherOfCity(int $cityId, string $minDate, string $maxDate): HttpResponseInterface
+    public function getWeatherOfCity(HttpRequest $request): HttpResponseInterface
     {
+        $cityId = $request->query['city_id'];
+        $minDate = $request->query['min_date'];
+        $maxDate = $request->query['max_date'];
+        
+        if (!is_string($cityId) || !is_string($minDate) || !is_string($maxDate)) {
+            return new JsonHttpResponse(["error" => "'city_id', 'min_date' és 'max_date' query paraméterek kötelezőek"], 400);
+        }
+        if (!preg_match('/^\d+$/', $cityId)) {
+            return new JsonHttpResponse(["error" => "'city_id' query paraméternek számnak kell lennie"], 400);
+        }
+        if (!preg_match('/^\d{8}$/', $minDate) || !preg_match('/^\d{8}$/', $maxDate)) {
+            return new JsonHttpResponse(["error" => "'min_date' és 'max_date' query paramétereknek 'YYYY-MM-DD' formátumúnak kell lenniük"], 400);
+        }
+
         $rows = $this->db->queryAssoc(
             "SELECT 
                 c.id City_id, 
@@ -66,23 +80,33 @@ class ExampleController
         return new JsonHttpResponse($rows);
     }
     
-    public function getWeatherOfRegion(string $regionName, string $minDate, string $maxDate): HttpResponseInterface
+    public function getWeatherOfRegion(HttpRequest $request): HttpResponseInterface
     {
+        $regionName = $request->query['region'];
+        $minDate = $request->query['min_date'];
+        $maxDate = $request->query['max_date'];
+        
+        if (!is_string($regionName) || !is_string($minDate) || !is_string($maxDate)) {
+            return new JsonHttpResponse(["error" => "'city_id', 'min_date' és 'max_date' query paraméterek kötelezőek"], 400);
+        }
+        if (!preg_match('/^\d{8}$/', $minDate) || !preg_match('/^\d{8}$/', $maxDate)) {
+            return new JsonHttpResponse(["error" => "'min_date' és 'max_date' query paramétereknek 'YYYY-MM-DD' formátumúnak kell lenniük"], 400);
+        }
         $rows = $this->db->queryAssoc(
             "SELECT 
-                c.region regionName, 
-                p.date,
-                avg(maxt.max_temp) max_temp,
-                avg(mint.min_temp) min_temp,
-                avg(p.precipitation) precipitation
+                c.region regionName,  
+                p.date date, 
+                avg(maxt.max_temp) max_temp, 
+                avg(mint.min_temp) min_temp, 
+                avg(p.precipitation) precipitation 
                 FROM cities c 
                     INNER JOIN maximum_temperatures maxt ON c.id = maxt.city_id 
                     INNER JOIN minimum_temperatures mint ON c.id = mint.city_id 
                     INNER JOIN precipitation p ON c.id = p.city_id 
-                        WHERE c.region like ':regionName' AND
-                            maxt.date = mint.date AND maxt.date = p.date AND
-                            maxt.date >= :minDate AND maxt.date <= :maxDate AND
-                            mint.date >= :minDate AND mint.date <= :maxDate AND
+                        WHERE c.region like :regionName AND 
+                            maxt.date = mint.date AND maxt.date = p.date AND 
+                            maxt.date >= :minDate AND maxt.date <= :maxDate AND 
+                            mint.date >= :minDate AND mint.date <= :maxDate AND 
                             p.date >= :minDate AND p.date <= :maxDate 
                         GROUP BY 
                             c.region, p.date
