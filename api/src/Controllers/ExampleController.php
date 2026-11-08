@@ -42,6 +42,19 @@ class ExampleController
         );
         return new JsonHttpResponse($rows[0]);
     }
+
+    public function getCities(): HttpResponseInterface
+    {
+        $rows = $this->db->queryAssoc(
+            "SELECT 
+                *
+            FROM 
+                cities 
+            ",
+            []
+        );
+        return new JsonHttpResponse($rows);
+    }
     
     public function getWeatherOfCity(HttpRequest $request): HttpResponseInterface
     {
