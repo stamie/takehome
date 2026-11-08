@@ -114,7 +114,7 @@ async function getCity(id: BigInt, min_date: BigInt, max_date: BigInt): Promise<
           <td style="border-width: 2px" class="border border-amber-500">${row.precipitation} ml</td>
         </tr>`
   )
-  ) + '</tbody>';
+  ).join("") + '</tbody>';
   const header = `<thead class="bg-amber-300">
   <tr>
     <th style="border-width: 2px" class="border border-amber-500">Dátum</th>
