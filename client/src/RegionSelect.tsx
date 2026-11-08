@@ -23,18 +23,31 @@ export function RegionSelect() {
   return (
     <div className="py-4 px-8 max-w-md mx-auto mt-8 border-2 border-solid border-amber-500 rounded-lg">
       <div className="flex flex-col">
-        <label htmlFor="name" className="p-2 font-bold">
-          Név
+        <label htmlFor="region" className="p-2 font-bold">
+          Régió kiválasztása:
         </label>
-        <input
-          id="name"
-          defaultValue={name}
+               <select
+          id="region"
+          defaultValue={value}
           onChange={(e) => {
             setName(e.target.value);
           }}
-          className="p-2 border-b-1 bg-gray-100 rounded-t-md focus:border-b-transparent"
-        />
+        >
+        <option value="0">Válassz várost</option>
+        <option value="1">Budapest</option>
+        <option value="2">Debrecen</option>
+        <option value="3">Szeged</option>
+        <option value="4">Miskolc</option>
+        <option value="5">Pécs</option>
+        </select>
         {error && <span className="text-red-500 text-sm">{error}</span>}
+         <button
+          onClick={(e) => {
+            e.preventDefault();
+            onGreetingRequest();
+          }}
+          className="mt-16 py-2 px-4 font-bold bg-amber-300 hover:bg-amber-400 active:bg-amber-500 rounded-lg cursor-pointer"
+        >
         <button
           onClick={(e) => {
             e.preventDefault();

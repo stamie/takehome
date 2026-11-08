@@ -77,7 +77,7 @@ class ExampleController
                             p.date >= :minDate AND p.date <= :maxDate;",
             [":cityId" => $cityId, ":minDate" => $minDate, ":maxDate" => $maxDate]
         );
-        return new JsonHttpResponse($rows);
+        return new JsonHttpResponse($rows, 200);
     }
     
     public function getWeatherOfRegion(HttpRequest $request): HttpResponseInterface
@@ -116,6 +116,6 @@ class ExampleController
                         ;",
             [":regionName" => $regionName, ":minDate" => $minDate, ":maxDate" => $maxDate]
         );
-        return new JsonHttpResponse($rows);
+        return new JsonHttpResponse($rows, 200);
     }
 }
