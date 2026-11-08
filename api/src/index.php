@@ -17,6 +17,7 @@ $router->addRoute("GET", "/hello", $helloController->sayHello(...));
 $router->addRoute("GET", "/budapest", $helloController->getBudapestMaxTempCount(...));
 // TODO: többi végpont
 
+$router->addRoute("GET", "/cities", $helloController->getCities(...));
 $router->addRoute("GET", "/city", $helloController->getWeatherOfCity(...));
 $router->addRoute("GET", "/region", $helloController->getWeatherOfRegion(...));
 

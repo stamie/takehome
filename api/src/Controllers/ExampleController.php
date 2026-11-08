@@ -42,6 +42,19 @@ class ExampleController
         );
         return new JsonHttpResponse($rows[0]);
     }
+
+    public function getCities(): HttpResponseInterface
+    {
+        $rows = $this->db->queryAssoc(
+            "SELECT 
+                *
+            FROM 
+                cities 
+            ",
+            []
+        );
+        return new JsonHttpResponse($rows);
+    }
     
     public function getWeatherOfCity(HttpRequest $request): HttpResponseInterface
     {
@@ -77,7 +90,7 @@ class ExampleController
                             p.date >= :minDate AND p.date <= :maxDate;",
             [":cityId" => $cityId, ":minDate" => $minDate, ":maxDate" => $maxDate]
         );
-        return new JsonHttpResponse($rows);
+        return new JsonHttpResponse($rows, 200);
     }
     
     public function getWeatherOfRegion(HttpRequest $request): HttpResponseInterface
@@ -116,6 +129,6 @@ class ExampleController
                         ;",
             [":regionName" => $regionName, ":minDate" => $minDate, ":maxDate" => $maxDate]
         );
-        return new JsonHttpResponse($rows);
+        return new JsonHttpResponse($rows, 200);
     }
 }
